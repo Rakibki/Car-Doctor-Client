@@ -10,7 +10,10 @@ import Services from "../pages/services/Services";
 import Blog from "../pages/blog/Blog";
 import Contact from "../pages/contact/Contact";
 import Error from "../pages/error/Error";
-
+import ServicesDetais from "../pages/servicesDetais/ServicesDetais";
+import ServiceBooking from "../pages/serviceBooking/ServiceBooking";
+import PrivateRoute from "./PrivateRoute";
+import MyBooking from "../pages/myBookings/MyBooking";
 
 
   const router = createBrowserRouter([
@@ -46,6 +49,20 @@ import Error from "../pages/error/Error";
         {
           path: "/contact",
           element: <Contact />
+        },
+        {
+          path: "/serviceDetais/:id",
+          element: <ServicesDetais />,
+          loader: ({params}) => fetch(`http://localhost:4000/serviceDetais/${params.id}`)
+        },
+        {
+          path: "/serviceBooking/:id",
+          element: <PrivateRoute> <ServiceBooking /> </PrivateRoute>,
+          loader: ({params}) => fetch(`http://localhost:4000/serviceDetais/${params.id}`)
+        },
+        {
+          path: "/myBokkings",
+          element: <PrivateRoute> <MyBooking /> </PrivateRoute>
         }
       ]
     },

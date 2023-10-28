@@ -21,7 +21,6 @@ const Home = () => {
       <OurTeam />
       <Choose />
       <Customer />
-      <Footer />
     </div>
   );
 };

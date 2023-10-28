@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword} from "firebase/auth"
+import {FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup} from "firebase/auth"
 import auth from "../firebase/firebase.config"
 
 export const authContext = createContext(null)
@@ -10,25 +10,43 @@ const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     const createUser = (email, password) => {
+      setLodding(true)
       return createUserWithEmailAndPassword(auth, email, password)
     } 
 
     const loginUser = (email, password) => {
+      setLodding(true)
       return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    const gooogleProvider = new GoogleAuthProvider();
+    const loginWithGoogle = () => {
+      return signInWithPopup(auth, gooogleProvider)
+    }
+
+
+    const githubProvider = new GithubAuthProvider();
+    const loginwithGithub = () => {
+      return signInWithPopup(auth, githubProvider)
+    } 
+
+    const facebookprovider = new FacebookAuthProvider();
+    const loginWithFacebook = () => {
+      return signInWithPopup(auth, facebookprovider)
     }
 
     useEffect(() => {
       const disConnect = onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser)
+        setLodding(false)
         return () => {
           disConnect()
         }
       })
     },[])
-    console.log(user);
 
 
-    const userIngo = {lodding, loginUser, createUser, user}
+    const userIngo = {lodding, loginWithGoogle, loginwithGithub, loginWithFacebook, loginUser, createUser, user}
 
   return (
     <authContext.Provider value={userIngo}>
